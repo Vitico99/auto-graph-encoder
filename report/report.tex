@@ -170,18 +170,119 @@ Lic. Ernesto Estevanell}
  
 
 %-----------------------------------------------------------------------------------
-% 	\subsection{Organización del Documento}\label{sub:results}
+	\subsection{Selecci\'on de \textit{features} de columnas}
+
+
+	\subsubsection*{Medidas de dimensi\'on}
+		\begin{enumerate}
+			\item \textbf{Longitud}: La cantidad de elementos de una columna, esta medida obtuvo un
+			alto \'indice de relevancia lo cual parece respaldar ciertas heur\'isticas 
+			utilizadas de forma com\'un por analistas como pueden ser "no tener demasiadas barras en los gr\'aficos"
+			o "no tener demasiadas porciones en un gr\'afico de pastel" debido a que dificultan
+			la correcta observaci\'on de los datos.
+		\end{enumerate} 
+
+	\subsubsection*{Medidas de tipo}
+		\begin{enumerate}
+			\item \textbf{Tipo general}: El tipo general se refiere a la clasificaci\'on de la variable estad\'istica
+			pudiendo ser categ\'orica (C), cuantitativa (Q) o temporal (T), esta clasificaci\'on se apoya en
+			heur\'isticas comunes como utilizar variables temporales y categ\'oricas en el eje $x$.
+			\item \textbf{Tipo Espec\'ifico}: Se refiere al tipo de dato utilizado para representar la variable pudiendo
+			ser una cadena de texto (\textit{string}), un valor booleano (\textit{boolean}), un entero (\textit{integer}), 
+			un decimal (\textit{decimal}) o una fecha (\textit{datetime}).
+		\end{enumerate}
+	
+	\subsubsection*{Medidas de valores}
+
+			Estas medidas se encargan de describir caracter\'isticas de los datos de la columna 
+			y debido a que existen distintos tipos de variables estas medidas son dependientes del tipo.
+			\begin{enumerate}
+				\item Estad\'isticas [Q,T]:
+					\begin{enumerate}
+						% \item \textbf{Medidas de tendencia central}: Se consideraron la media, mediana, moda y la normalizaci\'on de estas medidas
+						% utilizando el m\'aximo de la columna. El modelo propuesto en \cite{hu2019vizml} asignaba una baja
+						% relevancia a estas medidas excepto la media normalizada. Una de las mayores desventajas que podemos
+						% se\~nalar es que son muy sensibles a la magnitud de los datos lo cual dificultar\'ia la comparaci\'on de
+						% datasets con rangos de valores distintos, en particular la media es especialmente sensible a la
+						% existencia de valores extremos y el proceso de normalizar utilizando el m\'aximo puede agravar este hecho debido
+						% a que valores extremos muy altos resultar\'ian en valores de las medidas normalizadas cercanos a 0 independientemente de la distribuci\'on.
+						% Si bien existen relaciones entre estas medidas y las caracter\'isticas de la curva entre los puntos de datos
+						% la existencia de algoritmos para identificar estas relaciones espec\'ificas libera al modelo de la necesidad de inferirlas a 
+						% partir de medidas b\'asicas, un ejemplo de esto lo podemos observar en la relaci\'on con la asimetr\'ia \cite{mann2007introductory_asymetric} y
+						% la existencia de m\'ultiples algoritmos para su c\'omputo \cite{doane2011measuring}.
+						% \item Medidas de dispersi\'on: rango, rango normalizado, varianza, desviaci\'on est\'andar, coeficiente de variaci\'on, desviaci\'on
+						% mediana absoluta y desviaci\'on media absoluta.
+						% \item Medidas de posici\'on: $Q_1$ y $Q_3$ 
+						\item \textbf{Coeficiente de variaci\'on}: El coeficiente de variaci\'on expresa la raz\'on entre la desviaci\'on t\'ipica
+						y la media aritm\'etica: $$CV = \frac{s}{\overline{x}}$$ Tiene la ventaja de ser una medida de variabilidad relativa permitiendo poder
+						comparar columnas con diferentes rangos de valores y unidades de medidas \cite{mann2007introductory_cv}, adem\'as su interpretaci\'on como forma de evaluar
+						la homogeneidad/heterogeneidad de un conjunto de datos permite discretizar esta variable.\\\\
+						\begin{tabular}{| l | l |}
+							\hline
+							$CV$ & \text{Interpretaci\'on}\\ \hline
+							$CV \geq 0.26$ & \text{Muy heterog\'eneo}\\
+							$0.16 \leq CV < 0.26$ & \text{Heterog\'eneo}\\
+							$0.11 \leq CV < 0.16$ & \text{Homog\'eneo}\\
+							$0 \leq CV < 0.11$ & \text{Muy homog\'eneo} \\ \hline 
+						\end{tabular}
+						
+						\item \textbf{Coeficiente de dispersi\'on cuartil}: Este se define como:
+						$$\frac {Q_3 - Q_1}{Q_3 + Q_1}$$ 
+						donde $Q_1$ y $Q_3$ son el primer y tercer cuartil respectivamente. Esta medida permite comparar
+						los rangos de distintos conjuntos de datos aunque tambi\'en es importante notar que es sensible a la presencia de valores extremos.
+						
+					\end{enumerate}
+
+				\item Distribuci\'on [Q]:
+					\begin{enumerate}
+						\item \textbf{Entrop\'ia}: Se refiere a la definici\'on de \textit{entrop\'ia} en el campo de teor\'ia de la informaci\'on. Esta medida
+			 			fue utilizada en \cite{seo2004rank} para establecer un \textit{ranking} entre histogramas de acuerdo a la uniformidad de la distribuci\'on
+						 utilizando la siguiente definici\'on. Sea un histograma de $k$ intervalos entonces la entrop\'ia del histograma $h$ es
+						 $$H(h) = -\sum_{i=1}^{k}{p_i \log_2{p_i}}$$ donde $p_i$ es la probabilidad de que un elemento pertenezca al $i$-\'esimo intervalo. 
+						 Un alto valor de entrop\'ia se asocia a que los elementos pertenecen a una distribuci\'on uniforme y que el histograma tiende a ser plano.
+						
+						 \item \textbf{Gini}: El coeficiente de Gini es una medida de dispersi\'on definida como la media de las diferencias absolutas entre todos los
+						posibles pares de individuos de una poblaci\'on para una medida dada.
+						$$
+							G = \frac{ \sum_{i=1}^{n} \sum_{j=1}^n {| x_i - x_j |} } {2n^2\overline{x}}
+						$$
+						Donde $n$ es la cantidad de medidas y $\overline{x}$ es la media aritm\'etica.
+						El valor m\'inimo es 0 cuando todas las medidas son iguales, esto puede ser utilizado para medir la
+						homogeneidad/heterogeneidad de los datos.
+						
+						\item \textbf{Skewness}: Esta medida describe la asimetr\'ia de la distribuci\'on de acuerdo a la media,
+						indicando la direcci\'on y la magnitud relativa de la desviaci\'on de la distribuci\'on tomando como referencia una
+						distribuci\'on normal. Es el tercer momento est\'andar definido como:
+						$$
+							\tilde{\mu}_3 = E \left[\left( \frac{X - \mu}{\sigma} \right)^3\right]
+						$$
+						
+						\item \textbf{Curtosis}: Esta medida permite describir el comportamiento de los datos en la cola de la distribuci\'on, esto
+						permite obtener una medida de que tan susceptible es la distribuci\'on a la aparici\'on de valores extremales. Es el cuarto momento
+						est\'andar definido como:
+						$$
+							\tilde{\mu}_4 = E \left[\left( \frac{X - \mu}{\sigma} \right)^4\right]
+						$$
+
+						Adem\'as existe la definici\'on alternativa de exceso de curtosis la cual permite discretizar esta variable, esta se 
+						define como $\tilde{\mu}_4' = \tilde{\mu}_4 - 3$ y define las clases siguientes:
+
+						\begin{tabular}{| l | l |}
+							\hline
+							$\tilde{\mu}_4'$ & \text{Clase}\\ \hline
+							$\tilde{\mu}_4' = 0$ & \text{Mesokurtic}\\
+							$\tilde{\mu}_4' > 0$ & \text{Leptokurtic}\\
+							$\tilde{\mu}_4' < 0$ & \text{Platykurtic} \\ \hline 
+						\end{tabular}
+
+						\item \textbf{Normalidad}: 
+						
+						\item \textbf{Momentos de orden superior}:
+					\end{enumerate}
+			\end{enumerate}
+	 
 % %-----------------------------------------------------------------------------------
-% 		Puede agregar secciones y subsecciones según sea necesario para organizar
-% 		de manera más coherente su artículo. Tenga en cuenta que un documento más
-% 		plano es más fácil de navegar y entender, pero las subsecciones relacionadas
-% 		deberían estar agrupadas en una sección común.
-
-% 		Los nombres de las secciones deben ir en mayúsculas, excepto para las
-% 		preposiciones, conjunciones, y otros vocablos auxiliares.
-
-% 		Empiece un nuevo párrafo cada vez que vaya a comenzar una idea nueva.
-
+	 
 %-----------------------------------------------------------------------------------
 % 	\subsection{Listas y Descripciones}\label{sub:lists}
 % %-----------------------------------------------------------------------------------
@@ -287,9 +388,11 @@ Lic. Ernesto Estevanell}
 %===================================================================================
 % Bibliografía
 %-----------------------------------------------------------------------------------
-\begin{thebibliography}{99}
+% \begin{thebibliography}{99}
 %-----------------------------------------------------------------------------------
-	% \bibitem{knuth} Donald E. Knuth. \emph{The Art of Computer Programming}.
+	
+\bibliography{biblio}
+% \bibitem{knuth} Donald E. Knuth. \emph{The Art of Computer Programming}.
 	% 	Volume 1: Fundamental Algorithms (3rd~edition), 1997.
 	% 	Addison-Wesley Professional.
 
@@ -302,7 +405,7 @@ Lic. Ernesto Estevanell}
 	% 	Consultado en \today.
 
 %-----------------------------------------------------------------------------------
-\end{thebibliography}
+% \end{thebibliography}
 
 %-----------------------------------------------------------------------------------
 
