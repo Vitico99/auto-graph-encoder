@@ -4,3 +4,7 @@ class Model:
 
     def predict(self, X):
         pass
+
+class MultiOutputModel(Model):
+    def prob_predict(self, X):
+        pass
