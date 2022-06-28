@@ -1,9 +1,8 @@
 FID = 'fid'
 FIELD_ID = 'field_id'
-TRACE_TIPE = 'trace_type'
+TRACE_TYPE = 'trace_type'
 IS_XSRC = 'is_xsrc'
 IS_YSRC = 'is_ysrc'
-IS_ZSRC = 'is_zsrc'
 EXISTS = 'exists'
 LENGTH = 'length'
 DT_IS_STRING = 'data_type_is_string'
@@ -59,10 +58,9 @@ identifiers = [
 ]
 
 outcomes = [
-    TRACE_TIPE, 
+    TRACE_TYPE, 
     IS_XSRC, 
-    IS_YSRC, 
-    IS_ZSRC
+    IS_YSRC
 ]
 
 general_features = [
@@ -122,5 +120,5 @@ quantitative_features = [
 ]
 
 all_columns = identifiers + outcomes + general_features + categorical_features + quantitative_features
-outcomes_columns = identifiers + outcomes
-features_columns = identifiers + general_features + categorical_features + quantitative_features
+outcomes_columns = outcomes
+features_columns = general_features + categorical_features + quantitative_features
