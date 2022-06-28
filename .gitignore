@@ -5,3 +5,11 @@
 *.out
 *.bbl
 *.blg
+*.cfg
+share
+lib
+lib64
+bin
+*.csv
+*.zip
+__pycache__
