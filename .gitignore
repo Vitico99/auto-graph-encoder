@@ -13,3 +13,5 @@ bin
 *.csv
 *.zip
 __pycache__
+etc
+include
