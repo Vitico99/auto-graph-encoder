@@ -3,7 +3,7 @@ from sklearn.svm import SVC
 
 class SVCModel(Model):
     def __init__(self):
-        self.svc = SVC()
+        self.svc = SVC(C=15)
 
     def train(self, X, Y):
         self.svc.fit(X, Y)
