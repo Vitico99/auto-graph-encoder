@@ -95,16 +95,16 @@ def  preprocess(data_file, winsor=99, scaler='standard', data_directory='./base'
 
 
 categories_id = { 
-    ('bar', True, False) : 1,
-    ('bar', False, True) : 2,
-    ('box', True, False) : 3,
-    ('box', False, True) : 3,
-    ('heatmap', True, False) : 4,
-    ('heatmap', False, True) : 5,
-    ('histogram', True, False) : 6,
-    ('histogram', False, True) : 6,
-    ('line', True, False) : 7,
-    ('line', False, True) : 8,
-    ('scatter', True, False) : 9,
-    ('scatter', False, True) : 10
+    ('bar', True, False) : 0,
+    ('bar', False, True) : 1,
+    # ('box', True, False) : 2,
+    # ('box', False, True) : 2,
+    # ('heatmap', True, False) : 3,
+    # ('heatmap', False, True) : 4,
+    # ('histogram', True, False) : 5,
+    # ('histogram', False, True) : 5,
+    ('line', True, False) : 3,
+    ('line', False, True) : 4,
+    ('scatter', True, False) : 5,
+    ('scatter', False, True) : 6
 }

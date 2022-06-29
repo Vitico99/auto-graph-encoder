@@ -25,4 +25,4 @@ class Dataset:
             yield x_train, y_train, x_validate, y_validate
 
     def extract_x_y(self, df):
-        return df[features_columns].to_numpy(), np.array(df['class'])
+        return df[features_columns].to_numpy(dtype=np.float64), np.array(df['class'], dtype=np.int32)
