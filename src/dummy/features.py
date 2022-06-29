@@ -3,7 +3,7 @@ FIELD_ID = 'field_id'
 TRACE_TYPE = 'trace_type'
 IS_XSRC = 'is_xsrc'
 IS_YSRC = 'is_ysrc'
-EXISTS = 'exists'
+# EXISTS = 'exists'
 LENGTH = 'length'
 DT_IS_STRING = 'data_type_is_string'
 DT_IS_INT = 'data_type_is_integer'
@@ -12,9 +12,9 @@ DT_IS_TIME =  'data_type_is_time'
 GT_IS_C = 'general_type_is_c'
 GT_IS_Q = 'general_type_is_q'
 GT_IS_T = 'general_type_is_t'
-HAS_NONE = 'has_none'
+# HAS_NONE = 'has_none'
 PERCENTAGE_NONE = 'percentage_none'
-NUM_NONE = 'num_none'
+# NUM_NONE = 'num_none'
 IS_UNIQUE = 'is_unique'
 LIST_ENTROPY = 'list_entropy'
 HAS_OUTLIERS_15IQR = 'has_outliers_15iqr'
@@ -28,7 +28,7 @@ IS_MONOTONIC = 'is_monotonic'
 IS_LIN_SPACE = 'is_lin_space'
 IS_LOG_SPACE = 'is_log_space'
 IS_ONLY_FIELD = 'is_only_field'
-NUM_UNIQUE_ELEMS = 'num_unique_elements'
+# NUM_UNIQUE_ELEMS = 'num_unique_elements'
 UNIQUE_PERCENT = 'unique_percent'
 SORTEDNESS = 'sortedness'
 PERCENT_OUTLIERS_15IQR = 'percent_outliers_15iqr'
@@ -64,7 +64,7 @@ outcomes = [
 ]
 
 general_features = [
-    EXISTS, 
+    # EXISTS, 
     LENGTH, 
     DT_IS_STRING, 
     DT_IS_INT, 
@@ -76,9 +76,10 @@ general_features = [
 ]
 
 categorical_features = [
-    HAS_NONE, 
+    # HAS_NONE, 
     PERCENTAGE_NONE, 
-    NUM_NONE, IS_UNIQUE, 
+    # NUM_NONE, 
+    IS_UNIQUE, 
     LIST_ENTROPY, 
     HAS_OUTLIERS_15IQR, 
     HAS_OUTLIERS_3IQR, 
@@ -94,7 +95,7 @@ categorical_features = [
 ]
 
 quantitative_features = [
-    NUM_UNIQUE_ELEMS,
+    # NUM_UNIQUE_ELEMS,
     UNIQUE_PERCENT,
     SORTEDNESS,
     PERCENT_OUTLIERS_15IQR,
