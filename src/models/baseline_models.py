@@ -1,3 +1,4 @@
+import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.neighbors import KNeighborsClassifier
@@ -6,7 +7,20 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
-from .model import MultiOutputModel
+from .model import MultiOutputModel, Model
+
+class RandomModel(Model):
+    def __init__(self) -> None:
+        self.n_classes = None
+    
+    def train(self, X, Y):
+        self.n_classes = len(np.unique(Y))
+    
+    def predict(self, X):
+        return np.random.random_integers(0, self.n_classes-1, len(X))
+        
+
+
 
 class DecisionTreeModel(MultiOutputModel):
     def __init__(self, **kargs):
