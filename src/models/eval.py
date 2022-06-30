@@ -26,7 +26,7 @@ all_measures = single_output_measures.copy()
 all_measures.update(multiple_output_measures)
 
 
-def eval_model(model_class, dataset):
+def eval_model(model_class, dataset, params=None):
     results = {measure : 0 for measure in single_output_measures}
     if issubclass(model_class, MultiOutputModel):
         results.update({measure : 0 for measure in multiple_output_measures})
@@ -34,7 +34,11 @@ def eval_model(model_class, dataset):
     folds = 0
 
     for x_train, y_train, x_validate, y_validate in dataset:
-        model = model_class()
+        if params:
+            model = model_class(**params)
+        else:
+            model =model_class()
+        
         
         model.train(x_train, y_train)
         

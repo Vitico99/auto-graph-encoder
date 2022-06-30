@@ -9,8 +9,11 @@ from sklearn.svm import SVC
 from .model import MultiOutputModel
 
 class DecisionTreeModel(MultiOutputModel):
-    def __init__(self):
-        self.dtc = DecisionTreeClassifier(criterion='gini', max_depth=8)
+    def __init__(self, **kargs):
+        if not kargs:
+            self.dtc = DecisionTreeClassifier(criterion='gini', max_depth=8)
+        else:
+            self.dtc = DecisionTreeClassifier(**kargs)
 
     def train(self, X, Y):
         self.dtc.fit(X, Y)
@@ -23,9 +26,12 @@ class DecisionTreeModel(MultiOutputModel):
 
 class GradientBoostingModel(MultiOutputModel):
     
-    def __init__(self):
-        self.gbc = GradientBoostingClassifier(learning_rate=0.1, min_samples_split=500,min_samples_leaf=50,max_depth=8,max_features='sqrt',subsample=0.8)
-    
+    def __init__(self, **kargs):
+        if not kargs:
+            self.gbc = GradientBoostingClassifier(learning_rate=0.1, min_samples_split=500,min_samples_leaf=50,max_depth=8,max_features='sqrt',subsample=0.8)
+        else:
+            self.gbc = GradientBoostingClassifier(**kargs)
+
     def train(self, X, Y):
         self.gbc.fit(X, Y)
     
@@ -36,8 +42,11 @@ class GradientBoostingModel(MultiOutputModel):
         return self.gbc.predict_proba(X)
 
 class KNeighborsModel(MultiOutputModel):
-    def __init__(self):
-        self.knn = KNeighborsClassifier(metric= 'minkowski',n_neighbors=10, leaf_size=20)
+    def __init__(self, **kargs):
+        if not kargs:
+            self.knn = KNeighborsClassifier(metric= 'minkowski',n_neighbors=10, leaf_size=20)
+        else:
+            self.knn = KNeighborsClassifier(**kargs)
 
     def train(self, X, Y):
         self.knn.fit(X, Y)
@@ -77,9 +86,12 @@ class MLPModel(MultiOutputModel):
 
 
 class NaiveBayesModel(MultiOutputModel):
-    def __init__(self) -> None:
-        self.gnb = GaussianNB(var_smoothing=1e-05)
-    
+    def __init__(self, **kargs) -> None:
+        if not kargs:
+            self.gnb = GaussianNB(var_smoothing=1e-05)
+        else:
+            self.gnb = GaussianNB(**kargs)
+
     def train(self, X, Y):
         self.gnb.fit(X,Y)
     
@@ -90,8 +102,11 @@ class NaiveBayesModel(MultiOutputModel):
         return self.gnb.predict_proba(X)
 
 class RandomForestModel(MultiOutputModel):
-    def __init__(self):
-        self.rfst = RandomForestClassifier(min_samples_leaf=5, min_samples_split=8, n_estimators=1000)
+    def __init__(self, **kargs):
+        if not kargs:
+            self.rfst = RandomForestClassifier(min_samples_leaf=5, min_samples_split=8, n_estimators=1000)
+        else:
+            self.rfst = RandomForestClassifier(**kargs)
 
     def train(self, X, Y):
         self.rfst.fit(X, Y)
