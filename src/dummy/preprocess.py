@@ -103,8 +103,8 @@ categories_id = {
     # ('heatmap', False, True) : 4,
     # ('histogram', True, False) : 5,
     # ('histogram', False, True) : 5,
-    ('line', True, False) : 3,
-    ('line', False, True) : 4,
-    ('scatter', True, False) : 5,
-    ('scatter', False, True) : 6
+    ('line', True, False) : 2,
+    ('line', False, True) : 3,
+    ('scatter', True, False) : 4,
+    ('scatter', False, True) : 5
 }

@@ -1,5 +1,5 @@
 from sklearn.metrics import accuracy_score, recall_score, f1_score, roc_auc_score, cohen_kappa_score, log_loss, matthews_corrcoef
-from model import MultiOutputModel
+from .model import MultiOutputModel
 
 ACCURACY = 'Accuracy'
 RECALL = 'Recall'
