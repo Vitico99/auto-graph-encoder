@@ -45,13 +45,6 @@ class NetModel(Model):
         # # transform numpy vectors in tensors of expected shape
         x = self.vector_to_tensor(x, (ax1,1,ax2))
         y = self.vector_to_tensor(y, (ax1,1))
-        
-        # x = tf.constant(x, shape=(ax1, 1, ax2)) 
-        # y = tf.constant(y, shape=(ax1, 1))
-
-        # # transform the multiple tensors in a single tensor
-        # x = tf.data.Dataset.from_tensor_slices(x)
-        # y = tf.data.Dataset.from_tensor_slices(y)
 
         # zip to create the dataset
         dataset = tf.data.Dataset.zip((x,y))
@@ -79,4 +72,93 @@ class BasicNet(NetModel):
     
 
     
+
+class Autoencoder(tf.keras.Model):
+    def __init__(self,indim, outdim,name='autoencoder',**kwargs) -> None:
+        super(Autoencoder, self).__init__(name = name, **kwargs)
+        self.indim = indim
+        self.outdim = outdim
+
+        # build here the encoder 
+        self.encoder = self.build_encoder()
+
+        # build here the decoder 
+        self.decoder = self.build_decoder()
+
+    def build_encoder(self):
+        raise NotImplementedError()
+    
+    def build_decoder(self):
+        raise NotImplementedError()
+
+    @tf.function
+    def call(self, input):
+        encoding = self.encoder(input)
+        decoding = self.decoder(encoding)
+        return decoding
+
+    def train(self, X,epochs=10):
+        ax1, ax2 = X.shape
+        X = tf.constant(X,shape=(ax1,1,ax2))
+        X = tf.data.Dataset.from_tensor_slices(X)
+        dataset = tf.data.Dataset.zip((X,X))
+        self.fit(dataset,epochs=epochs)
+    
+    def encode(self, X):
+        ax1, ax2 = X.shape
+        x_train = tf.constant(X, shape=(ax1,1,ax2))
+        x_train = tf.data.Dataset.from_tensor_slices(x_train)
+        y_predict = self.encoder(X)
+        return y_predict
+    
+
+class SimpleAutoencoder(Autoencoder):
+    def __init__(self, indim, outdim, name='simple-autoencoder', **kwargs) -> None:
+        super().__init__(indim, outdim, name, **kwargs)
+        self.compile(
+            optimizer = tf.optimizers.Adam(0.01),
+            loss = tf.losses.MeanSquaredError()
+        )
+
+    def build_encoder(self):
+        return tf.keras.Sequential([
+            layers.Input(shape=(self.indim,)),
+            layers.Dense(self.outdim, activation='relu'),
+        ])
+    
+    def build_decoder(self):
+        return tf.keras.Sequential([
+            layers.Dense(self.indim, activation='sigmoid')
+        ])
+    
+
+class DeepAutoencoder(Autoencoder):
+    def __init__(self, indim, outdim, name='deep-autoencoder', **kwargs) -> None:
+        super().__init__(indim, outdim, name, **kwargs)
+
+        self.compile(
+            optimizer = tf.optimizers.Adam(0.01),
+            loss = tf.losses.MeanSquaredError()
+        )
+    
+    def build_encoder(self):
+        return tf.keras.Sequential([
+            layers.Input(shape=(self.indim,)),
+            layers.Dense(self.outdim, activation='relu'),
+        ])
+    
+    def build_decoder(self):
+        return tf.keras.Sequential([
+            layers.Dense(self.outdim, activation='sigmoid'),
+            layers.Dense(self.indim),
+        ])
+    
+    
+    
+
+
+
+    
+
+
 
