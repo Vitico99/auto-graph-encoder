@@ -8,18 +8,18 @@ from sklearn.model_selection import train_test_split
 
 
 class NetModel(Model):
-    def __init__(self, epochs=3, input_size=44, num_classes=6) -> None:
-        self.epochs = epochs
+    def __init__(self, input_size=44, num_classes=6) -> None:
 
         # build the NN model here using the constructor arguments
         self.model = None
 
 
-    def train(self, X, Y):
+    def train(self, X, Y, epochs=3):
         x_train,x_val,y_train,y_val = train_test_split(X, Y, test_size=0.2, random_state=13)
         train_dataset = self.vectors_to_dataset(x_train, y_train)
         val_dataset = self.vectors_to_dataset(x_val, y_val)
-        self.model.fit(train_dataset, validation_data=val_dataset, epochs=self.epochs)
+        history = self.model.fit(train_dataset, validation_data=val_dataset, epochs=epochs)
+        return history
 
     def predict(self, X):
         ax1, ax2 = X.shape
@@ -49,12 +49,13 @@ class NetModel(Model):
         # zip to create the dataset
         dataset = tf.data.Dataset.zip((x,y))
         return dataset
-    
+   
+
 
 
 class BasicNet(NetModel):
-    def __init__(self, epochs=3, input_size=44, num_classes=6) -> None:
-        super().__init__(epochs, input_size, num_classes)
+    def __init__(self, input_size=44, num_classes=6) -> None:
+        super().__init__(input_size, num_classes)
         
         self.model = tf.keras.Sequential([
             layers.Dense(input_size, activation=None),
@@ -102,7 +103,7 @@ class Autoencoder(tf.keras.Model):
         X = tf.constant(X,shape=(ax1,1,ax2))
         X = tf.data.Dataset.from_tensor_slices(X)
         dataset = tf.data.Dataset.zip((X,X))
-        self.fit(dataset,epochs=epochs)
+        return self.fit(dataset,epochs=epochs)
     
     def encode(self, X):
         ax1, ax2 = X.shape
